@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>I'm Sorry ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+      text-align: center;
+      font-family: Arial;
+    }
+    canvas {
+      background: #222;
+      display: block;
+      margin: 20px auto;
+      border: 2px solid white;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Fix My Mistake 🥲</h2>
+<p>Help me reach you without messing up again</p>
+
+<canvas id="game" width="400" height="400"></canvas>
+
+<script>
+let canvas = document.getElementById("game");
+let ctx = canvas.getContext("2d");
+
+let player = { x: 20, y: 180, size: 20 };
+let goal = { x: 360, y: 180, size: 20 };
+
+let obstacles = [
+  { x: 150, y: 100, w: 20, h: 200 },
+  { x: 250, y: 0, w: 20, h: 200 }
+];
+
+let keys = {};
+
+document.addEventListener("keydown", e => keys[e.key] = true);
+document.addEventListener("keyup", e => keys[e.key] = false);
+
+function update() {
+  if (keys["ArrowUp"]) player.y -= 2;
+  if (keys["ArrowDown"]) player.y += 2;
+  if (keys["ArrowLeft"]) player.x -= 2;
+  if (keys["ArrowRight"]) player.x += 2;
+
+  // collision with obstacles
+  for (let o of obstacles) {
+    if (
+      player.x < o.x + o.w &&
+      player.x + player.size > o.x &&
+      player.y < o.y + o.h &&
+      player.y + player.size > o.y
+    ) {
+      player.x = 20;
+      player.y = 180;
+      alert("I messed up again 😭");
+    }
+  }
+
+  // reach goal
+  if (
+    player.x < goal.x + goal.size &&
+    player.x + player.size > goal.x &&
+    player.y < goal.y + goal.size &&
+    player.y + player.size > goal.y
+  ) {
+    alert("I’m really sorry. I’ll do better ❤️");
+    player.x = 20;
+    player.y = 180;
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, 400, 400);
+
+  // player
+  ctx.fillStyle = "cyan";
+  ctx.fillRect(player.x, player.y, player.size, player.size);
+
+  // goal
+  ctx.fillStyle = "pink";
+  ctx.fillRect(goal.x, goal.y, goal.size, goal.size);
+
+  // obstacles
+  ctx.fillStyle = "red";
+  for (let o of obstacles) {
+    ctx.fillRect(o.x, o.y, o.w, o.h);
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+</body>
+</html>
