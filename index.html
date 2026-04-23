@@ -16,9 +16,9 @@ body {
     font-family: 'Comic Sans MS', cursive;
 }
 
-/* Cat */
+/* CAT */
 .cat {
-    font-size: 100px;
+    width: 180px;
     cursor: pointer;
     transition: transform 0.3s;
 }
@@ -26,20 +26,20 @@ body {
     transform: scale(1.1);
 }
 
-/* Bouquet */
+/* BOUQUET */
 .bouquet {
     position: absolute;
-    font-size: 60px;
+    width: 120px;
     opacity: 0;
     transform: scale(0);
     transition: all 0.8s ease;
 }
 .show {
     opacity: 1;
-    transform: scale(2);
+    transform: scale(2.5);
 }
 
-/* Message */
+/* MESSAGE */
 .message {
     position: absolute;
     top: 65%;
@@ -53,7 +53,7 @@ body {
     opacity: 1;
 }
 
-/* Floating hearts */
+/* HEARTS */
 .heart {
     position: absolute;
     font-size: 20px;
@@ -64,21 +64,34 @@ body {
     from { transform: translateY(100vh); opacity: 1; }
     to { transform: translateY(-10vh); opacity: 0; }
 }
+
+/* SPARKLES */
+.sparkle {
+    position: absolute;
+    font-size: 14px;
+    animation: sparkle 2s linear infinite;
+}
+
+@keyframes sparkle {
+    0% {opacity: 0;}
+    50% {opacity: 1;}
+    100% {opacity: 0;}
+}
 </style>
 </head>
 
 <body>
 
-<!-- AUDIO -->
+<!-- MUSIC -->
 <audio id="music">
-  <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_9466f3b0c6.mp3">
+    <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- CAT (emoji fallback - always works) -->
-<div class="cat" onclick="showSurprise()">🐱</div>
+<!-- CAT -->
+<img src="cat.jpg" class="cat" onclick="showSurprise()">
 
 <!-- BOUQUET -->
-<div class="bouquet" id="bouquet">💐</div>
+<img src="bouquet.jpg" class="bouquet" id="bouquet">
 
 <!-- MESSAGE -->
 <div class="message" id="message"></div>
@@ -94,11 +107,9 @@ function showSurprise() {
     bouquet.classList.add("show");
     msg.classList.add("visible");
 
-    // Force play audio properly
+    // Play music
     music.currentTime = 0;
-    music.play().catch(() => {
-        console.log("User interaction needed for audio");
-    });
+    music.play().catch(() => {});
 
     // Typewriter effect
     let i = 0;
@@ -107,13 +118,13 @@ function showSurprise() {
         if (i < text.length) {
             msg.innerHTML += text.charAt(i);
             i++;
-            setTimeout(type, 40);
+            setTimeout(type, 50);
         }
     }
     type();
 }
 
-/* Hearts */
+/* HEARTS */
 function createHeart() {
     const heart = document.createElement("div");
     heart.className = "heart";
@@ -126,6 +137,19 @@ function createHeart() {
     setTimeout(() => heart.remove(), 6000);
 }
 setInterval(createHeart, 250);
+
+/* SPARKLES */
+function createSparkle() {
+    const sparkle = document.createElement("div");
+    sparkle.className = "sparkle";
+    sparkle.innerText = "✨";
+    sparkle.style.left = Math.random() * 100 + "vw";
+    sparkle.style.top = Math.random() * 100 + "vh";
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => sparkle.remove(), 2000);
+}
+setInterval(createSparkle, 300);
 </script>
 
 </body>
