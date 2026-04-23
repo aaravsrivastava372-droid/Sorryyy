@@ -18,7 +18,7 @@ body {
 
 /* Cat */
 .cat {
-    width: 180px;
+    font-size: 100px;
     cursor: pointer;
     transition: transform 0.3s;
 }
@@ -29,14 +29,14 @@ body {
 /* Bouquet */
 .bouquet {
     position: absolute;
-    width: 120px;
+    font-size: 60px;
     opacity: 0;
     transform: scale(0);
     transition: all 0.8s ease;
 }
 .show {
     opacity: 1;
-    transform: scale(1.8);
+    transform: scale(2);
 }
 
 /* Message */
@@ -56,7 +56,6 @@ body {
 /* Floating hearts */
 .heart {
     position: absolute;
-    color: #ff4d88;
     font-size: 20px;
     animation: float linear infinite;
 }
@@ -65,35 +64,21 @@ body {
     from { transform: translateY(100vh); opacity: 1; }
     to { transform: translateY(-10vh); opacity: 0; }
 }
-
-/* Sparkles */
-.sparkle {
-    position: absolute;
-    color: white;
-    font-size: 12px;
-    animation: sparkleAnim 2s linear infinite;
-}
-
-@keyframes sparkleAnim {
-    0% {opacity: 0;}
-    50% {opacity: 1;}
-    100% {opacity: 0;}
-}
 </style>
 </head>
 
 <body>
 
-<!-- MUSIC -->
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3b7d9c0f67.mp3?filename=dreamy-soft-piano-ambient-110624.mp3">
+<!-- AUDIO -->
+<audio id="music">
+  <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_9466f3b0c6.mp3">
 </audio>
 
-<!-- CAT IMAGE -->
-<img src="https://i.imgur.com/8QfQZ7T.png" class="cat" onclick="showSurprise()">
+<!-- CAT (emoji fallback - always works) -->
+<div class="cat" onclick="showSurprise()">🐱</div>
 
 <!-- BOUQUET -->
-<img src="https://i.imgur.com/6Xb6X6G.png" class="bouquet" id="bouquet">
+<div class="bouquet" id="bouquet">💐</div>
 
 <!-- MESSAGE -->
 <div class="message" id="message"></div>
@@ -102,13 +87,22 @@ body {
 const text = "Dear Aaratrika... A happy bouquet day to my lovely and cutest wifeeeeyyy. I love youuu so sooo sooo soo muchhhh 💖";
 
 function showSurprise() {
-    document.getElementById("bouquet").classList.add("show");
-    document.getElementById("music").play();
-
-    let i = 0;
+    const bouquet = document.getElementById("bouquet");
     const msg = document.getElementById("message");
+    const music = document.getElementById("music");
+
+    bouquet.classList.add("show");
     msg.classList.add("visible");
 
+    // Force play audio properly
+    music.currentTime = 0;
+    music.play().catch(() => {
+        console.log("User interaction needed for audio");
+    });
+
+    // Typewriter effect
+    let i = 0;
+    msg.innerHTML = "";
     function type() {
         if (i < text.length) {
             msg.innerHTML += text.charAt(i);
@@ -132,19 +126,6 @@ function createHeart() {
     setTimeout(() => heart.remove(), 6000);
 }
 setInterval(createHeart, 250);
-
-/* Sparkles */
-function createSparkle() {
-    const sparkle = document.createElement("div");
-    sparkle.className = "sparkle";
-    sparkle.innerText = "✨";
-    sparkle.style.left = Math.random() * 100 + "vw";
-    sparkle.style.top = Math.random() * 100 + "vh";
-    document.body.appendChild(sparkle);
-
-    setTimeout(() => sparkle.remove(), 2000);
-}
-setInterval(createSparkle, 300);
 </script>
 
 </body>
